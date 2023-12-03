@@ -3,3 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+:root{
+    --gray :#E7E3E3;
+    --blue :#0080EE;
+}
+
+body{
+    background-color: var(--gray);
+}
