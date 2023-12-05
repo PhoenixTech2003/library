@@ -108,6 +108,24 @@ form > button{
 }
 
 .book-card {
+    box-shadow: 2px 1px 1px rgb(215, 210, 210);
+    display: grid;
+    gap: 10px;
+    
+    align-content: center;
+    padding: 20px;
+    grid-template-rows: 2fr 1fr 1fr 1fr 1fr;
     background-color: white;
     height: 300px;
+
+}
+
+.book-card .cover-art{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 50px;
+    background-color: var(--blue);
+    
 }
