@@ -11,10 +11,21 @@ const bookList = document.querySelector(".book-list");
 const addButton = document.querySelector(".add");
 //create book-card  div
 let bookCard  = document.createElement("div");
-//add an event listener to addButton
+const mainContainer = document.querySelector(".main-container");
+const sideBar = document.querySelector(".side-bar");
 
+mainContainer.removeChild(sideBar);
+const newBookButton = document.querySelector(".new-book");
+
+
+//add an event listener to addButton
+newBookButton.addEventListener("click",displaySideBar);
 addButton.addEventListener("click",getInputs);
 
+function displaySideBar(event){
+    event.preventDefault();
+    mainContainer.insertBefore(sideBar,bookList);
+}
 
 //function to get input values:
 function getInputs(event){
