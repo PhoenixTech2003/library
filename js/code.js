@@ -19,6 +19,8 @@ const newBookButton = document.querySelector(".new-book");
 
 
 //add an event listener to addButton
+
+
 newBookButton.addEventListener("click",displaySideBar);
 addButton.addEventListener("click",getInputs);
 
@@ -45,7 +47,9 @@ function getInputs(event){
 function generateBookCards(){
     bookCard  = document.createElement("div");
     bookCard.classList.add("book-card");
+    bookCard.dataset.number = count-1;
     bookList.appendChild(bookCard);
+
     let coverArt = document.createElement("div");
     bookCard.appendChild(coverArt);    
     coverArt.classList.add("cover-art");
@@ -54,6 +58,10 @@ function generateBookCards(){
     let author = document.createElement("div");
     let pages = document.createElement("div");
     let read = document.createElement("div");
+    let removeBookButton = document.createElement("button");
+    removeBookButton.dataset.number = count-1;
+
+
 
 
 
@@ -61,6 +69,19 @@ function generateBookCards(){
     bookCard.appendChild(author);
     bookCard.appendChild(pages);
     bookCard.appendChild(read);
+    bookCard.appendChild(removeBookButton);
+    removeBookButton.innerHTML = "Remove Book";
+    removeBookButton.classList.add("remove-book");
+
+let removeBook = document.querySelectorAll(".remove-book"); //select all remove buttons
+removeBook.forEach(btn => {
+    btn.addEventListener("click",(event)=>{
+        let bookCardNumber = event.target.dataset.number;
+        bookCard = document.querySelector(`[data-number = '${bookCardNumber}']`);
+        bookList.removeChild(bookCard);
+    })
+})
+
 
     let firstLetterOfTitle = myLibrary[count-1].title[0].toUpperCase();
     let titleVal = myLibrary[count-1].title;
@@ -100,3 +121,9 @@ function Book(title,author,pages,read){
 function addBookToLibrary(object){
     myLibrary.push(object);
 }
+
+//add an event listener to all remove buttons of click
+
+
+
+//remove book card if card number = button number
