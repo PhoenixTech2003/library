@@ -71,6 +71,9 @@ form{
 }
 
 .read{
+    display: grid;
+    grid-template-columns: 0.1fr 1fr;
+    row-gap: 10px;
     grid-column: 1 / 3;
 }
 
@@ -80,7 +83,7 @@ label{
     font-weight: 700;
 }
 
-input{
+input, select{
     border: none;
     padding: 0.5em;
     border-radius: 10px;
