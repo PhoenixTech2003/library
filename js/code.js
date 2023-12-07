@@ -4,7 +4,7 @@ let count  = 1;
 const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector("#pages");
-const readInput = document.querySelector("#read");
+const readInput = document.querySelector("#read-status");
 //select book-list div
 const bookList = document.querySelector(".book-list");
 // select add button
@@ -34,9 +34,11 @@ function getInputs(event){
     //prevent default action of add  button
     event.preventDefault();
     // create an object variable and pass input values to object
-    let book = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.value);
-    //pass object to addBookToLibrary function
-    addBookToLibrary(book);
+    
+        let book = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.options[readInput.selectedIndex].value
+            );
+        //pass object to addBookToLibrary function
+        addBookToLibrary(book);
     generateBookCards();
     clearInputs();
     
@@ -79,6 +81,8 @@ removeBook.forEach(btn => {
         let bookCardNumber = event.target.dataset.number;
         bookCard = document.querySelector(`[data-number = '${bookCardNumber}']`);
         bookList.removeChild(bookCard);
+        myLibrary.splice(bookCardNumber,1);
+        count --;
     })
 })
 
@@ -105,7 +109,7 @@ removeBook.forEach(btn => {
 
 
 function clearInputs(){
-    const inputs = document.querySelectorAll("input");
+    const inputs = document.querySelectorAll("form > input");
     inputs.forEach(singleInput =>singleInput.value = "");
     
 }         
