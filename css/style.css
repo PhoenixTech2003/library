@@ -133,8 +133,19 @@ form > button{
     
 }
 
-.remove-book {
+.remove-book,
+.not-read-book {
     background-color: red;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    font-weight: 800;
+    padding: 5px 10px;
+}
+
+
+.read-book {
+    background-color: rgb(102, 155, 22);
     color: white;
     font-size: 1.5rem;
     border: none;
