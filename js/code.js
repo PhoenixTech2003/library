@@ -2,6 +2,7 @@ const myLibrary = []; //array to store book objects
 
 let book;
 
+
 const addBookBtn =document.querySelector(".add");//select button to add book to library
 //create an event listener for the addBookBtn to add to library
 addBookBtn.addEventListener("click",function(event){
@@ -43,6 +44,15 @@ document.addEventListener("click",function(event){
         generateBookCard();
     }   
 });
+
+const newBookBtn = document.querySelector(".new-book");//select the new book button
+const sideBar = document.querySelector(".side-bar");//select the side bar
+const mainContainer = document.querySelector(".main-container");//select the main container
+const listOfBooks = document.querySelector(".book-list");//select book list element
+//remove the side bar from the container
+mainContainer.removeChild(sideBar);
+//add an event listener to the new book button that adds the side bar to main container
+newBookBtn.addEventListener("click",()=>mainContainer.insertBefore(sideBar,listOfBooks));
 
 
 
