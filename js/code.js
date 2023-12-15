@@ -1,5 +1,7 @@
 const myLibrary = []; //array to store book objects
 
+let book;
+
 const addBookBtn =document.querySelector(".add");//select button to add book to library
 //create an event listener for the addBookBtn to add to library
 addBookBtn.addEventListener("click",function(event){
@@ -21,7 +23,25 @@ document.addEventListener("click",function(event){
         //call generate book card function
         generateBookCard();
     }
-    
+
+    //if element class name === "read book":
+    if (element.className === "read-book"){
+        //create variable to store book data attribute
+        let toggleBtnNumber = element.dataset.readStatusNumber;
+        //call toggle read function and pass index and read status
+        book.toggleReadStatus(toggleBtnNumber,"No");
+        //call generateBookCard function
+        generateBookCard();
+    }
+    //if element class name === "read book":
+    if (element.className === "not-read-book"){
+        //create variable to store book data attribute
+        let toggleBtnNumber = element.dataset.readStatusNumber
+        //call toggle read function and pass index and read status
+        book.toggleReadStatus(toggleBtnNumber,"Yes");
+        //call generateBookCard function
+        generateBookCard();
+    }   
 });
 
 
@@ -36,12 +56,19 @@ function Book(title, author, pages, readStatus){
 
 }
 
+//function that toggles the read status of a book
+Book.prototype.toggleReadStatus = function (indexOfBook,readStatus){
+    //select the title and assign read status
+    myLibrary[indexOfBook].readStatus = readStatus;
+
+};
+
 //function that adds a book to myLibrary array
 function addBookToLibrary(){
 
     let bookDetails = getBookDetails();//variable to store return value of getBookDetails
 
-    let book = new Book(bookDetails.title,bookDetails.author,bookDetails.pages,bookDetails.readStatus);//create object that receives properties of a book
+    book = new Book(bookDetails.title,bookDetails.author,bookDetails.pages,bookDetails.readStatus);//create object that receives properties of a book
 
     //push to myLibrary array
     myLibrary.push(book);
@@ -141,6 +168,27 @@ function generateBookCard(){
         bookCard.append(bookReadStatusContainer);
         //set inner html = bookReadStatus
         bookReadStatusContainer.innerHTML = `Read Status: ${bookReadStatus}`;
+
+       let readStatusBtn = document.createElement("button"); //create a read status button
+        //append read status button
+        bookCard.append(readStatusBtn);
+        //add data attribute to identify toggle buttons
+        readStatusBtn.dataset.readStatusNumber = index;
+        //if read status === no:
+        if (bookReadStatus === "No"){
+            //add not read class to read status button
+            readStatusBtn.classList.add("not-read-book");
+            readStatusBtn.innerHTML = "Not Read";
+
+        }
+        //else
+        else{
+            //add read book class to read status button
+            readStatusBtn.classList.add("read-book");
+            readStatusBtn.innerHTML = "Read Book";
+
+
+        }
 
         let removeBtn = document.createElement("button");//create a remove button
         //append it to book card
