@@ -1,224 +1,181 @@
-const myLibrary = []; //array to store book objects
+class Book{
+    library = [];
 
-let book;
+    addBooktoLibrary(title,author,pages,readStatus){
+        let bookDetails = {
+            title : title,
+            author : author,
+            pages : pages,
+            readStatus: readStatus
+        };
 
-
-const addBookBtn =document.querySelector(".add");//select button to add book to library
-//create an event listener for the addBookBtn to add to library
-addBookBtn.addEventListener("click",function(event){
-    event.preventDefault();
-    addBookToLibrary();
-    clearInputFields();
-    generateBookCard();
-});
-
-document.addEventListener("click",function(event){
-    //create variable for selected elements
-    let element = event.target;
-    //if element === remove button
-    if(element.className === "remove-book"){
-        //create variable to store remove book data attribute
-        let bookNumber = element.dataset.removeBtnNumber;
-        //call remove book function and pass data attribute
-        removeBook(bookNumber);
-        //call generate book card function
-        generateBookCard();
+        this.library.push(bookDetails);
     }
 
-    //if element class name === "read book":
-    if (element.className === "read-book"){
-        //create variable to store book data attribute
-        let toggleBtnNumber = element.dataset.readStatusNumber;
-        //call toggle read function and pass index and read status
-        book.toggleReadStatus(toggleBtnNumber,"No");
-        //call generateBookCard function
-        generateBookCard();
+    removeBookFromLibrary(index){
+        this.library.splice(index,1);
     }
-    //if element class name === "read book":
-    if (element.className === "not-read-book"){
-        //create variable to store book data attribute
-        let toggleBtnNumber = element.dataset.readStatusNumber
-        //call toggle read function and pass index and read status
-        book.toggleReadStatus(toggleBtnNumber,"Yes");
-        //call generateBookCard function
-        generateBookCard();
-    }   
-});
 
-const newBookBtn = document.querySelector(".new-book");//select the new book button
-const sideBar = document.querySelector(".side-bar");//select the side bar
-const mainContainer = document.querySelector(".main-container");//select the main container
-const listOfBooks = document.querySelector(".book-list");//select book list element
-//remove the side bar from the container
-mainContainer.removeChild(sideBar);
-//add an event listener to the new book button that adds the side bar to main container
-newBookBtn.addEventListener("click",()=>mainContainer.insertBefore(sideBar,listOfBooks));
-
-
-
-//constructor for creating book objects
-function Book(title, author, pages, readStatus){
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.readStatus = readStatus;
-
-
-}
-
-//function that toggles the read status of a book
-Book.prototype.toggleReadStatus = function (indexOfBook,readStatus){
-    //select the title and assign read status
-    myLibrary[indexOfBook].readStatus = readStatus;
-
-};
-
-//function that adds a book to myLibrary array
-function addBookToLibrary(){
-
-    let bookDetails = getBookDetails();//variable to store return value of getBookDetails
-
-    book = new Book(bookDetails.title,bookDetails.author,bookDetails.pages,bookDetails.readStatus);//create object that receives properties of a book
-
-    //push to myLibrary array
-    myLibrary.push(book);
-    
-
-
-}
-
-//function to get details from the DOM
-function getBookDetails(){    
-    //select all side-bar input elements text
-    const titleInput = document.querySelector("#title").value;
-    const authorInput = document.querySelector("#author").value;
-    const pagesInput = document.querySelector("#pages").value;
-    const readStatusInput = document.querySelector("#read-status").value;
-
-     //create object to store book details
-    let bookDetails = {
-        title: titleInput,
-        author: authorInput,
-        pages: pagesInput,
-        readStatus:readStatusInput
-    };
-    
-    
-    //return  the book details object
-    return bookDetails;
-}
-
-//function to clear input fields
-function clearInputFields(){
-
-    //select all input fields apart from the option box
-    const inputFields = document.querySelectorAll("form > input");
-    //set value = "" for each input field
-    inputFields.forEach(inputField => inputField.value = "");
-    
-}
-
-//function to create book cards
-function generateBookCard(){
-    const bookListContainer = document.querySelector(".book-list"); //select the book list div to append and remove book cards
-    
-    let lengthOfArray = myLibrary.length; //get length of myLibrary array
-    //remove existing book cards to regenerate after adding new book card
-    const bookCardContainer = document.querySelectorAll(".book-card");
-    bookCardContainer.forEach(bookCard => bookListContainer.removeChild(bookCard));
-    //use for loop to generate book cards
-    for(let index = 0; index < lengthOfArray; index++){
-        
-        let bookCard = document.createElement("div"); //create blank div element for the book cards
-        //append book card to book list div
-        bookListContainer.append(bookCard);
-        //add book card class to book card div
-        bookCard.className = "book-card";
-        bookCard.dataset.cardNumber = index;//add a data atribute to each book card for identification
-        //select the book card using the data atribute
-        bookCard = document.querySelector(`.book-card[data-card-number = "${index}" ]`);
-        const coverArtContainer = document.createElement("div");//create a div for the cover art
-        let coverArtLetter = myLibrary[index].title.charAt(0);//select the first letter of the book title to be used for the cover art
-        //append cover art div to selected book card
-        bookCard.append(coverArtContainer);
-        //add the cover art class to the coveart art div
-        coverArtContainer.className = "cover-art";
-        coverArtContainer.innerHTML = coverArtLetter;//insert the first letter in the inner html of the cover art div
-        //create variable to store title of book
-        let bookTitle = myLibrary[index].title;
-        //create variable to store author of book
-        let bookAuthor = myLibrary[index].author;
-        //create variable to store pages of book
-        let bookPages = myLibrary[index].pages;
-        //create variable to store read status of book
-        let bookReadStatus = myLibrary[index].readStatus;
-
-        //create div to store the book title
-        let bookTitleContainer = document.createElement("div");
-        //append book title div to book card
-        bookCard.append(bookTitleContainer);
-        bookTitleContainer.innerHTML =`Title: ${bookTitle}` ;//set inner html = bookTile
-        
-
-        //create div to store the book author
-        let bookAuthorContainer = document.createElement("div");
-        //append book title div to book card
-        bookCard.append(bookAuthorContainer);
-        bookAuthorContainer.innerHTML =`Author: ${bookAuthor}` //set inner html = bookAuthor
-
-         //create div to store the book pages
-         let bookPagesContainer = document.createElement("div");
-        //append book pages div to book card
-        bookCard.append(bookPagesContainer);
-        bookPagesContainer.innerHTML = `Pages: ${bookPages}`//set inner html = bookPages
-
-         //create div to store the book read status
-         let bookReadStatusContainer = document.createElement("div");
-        //append book read status div to book card
-        bookCard.append(bookReadStatusContainer);
-        //set inner html = bookReadStatus
-        bookReadStatusContainer.innerHTML = `Read Status: ${bookReadStatus}`;
-
-       let readStatusBtn = document.createElement("button"); //create a read status button
-        //append read status button
-        bookCard.append(readStatusBtn);
-        //add data attribute to identify toggle buttons
-        readStatusBtn.dataset.readStatusNumber = index;
-        //if read status === no:
-        if (bookReadStatus === "No"){
-            //add not read class to read status button
-            readStatusBtn.classList.add("not-read-book");
-            readStatusBtn.innerHTML = "Not Read";
+    toggleReadStatus(index){
+       let readStatus = this.library[index].readStatus;
+        if (readStatus === "No"){
+            this.library[index].readStatus = "Yes";
 
         }
-        //else
         else{
-            //add read book class to read status button
-            readStatusBtn.classList.add("read-book");
-            readStatusBtn.innerHTML = "Read Book";
 
-
+            this.library[index].readStatus = "No"
         }
-
-        let removeBtn = document.createElement("button");//create a remove button
-        //append it to book card
-        bookCard.append(removeBtn);
-        //give it a class of remove book
-        removeBtn.className = "remove-book";
-        //add a data attribute of removeBtnNumber
-        removeBtn.dataset.removeBtnNumber = index;
-        removeBtn.innerHTML = "Remove Book";//add inner html = remove book
-
-
-
-        
+            
     }
+
+}
+
+class displayController{
+   static book = new Book();
+    constructor(){
+        this.bindEvents();
+    }
+
+
+
+
+    static addClasses(element,className){
+       return element.classList.add(className);
         
+    } 
+
+    
+   static generateBookCard(){
+            displayController.removeExistingBookCard();
+            displayController.book.library.forEach((value,index) =>{
+                let bookCard = document.createElement("div");
+                displayController.addClasses(bookCard,"book-card");
+                bookCard.dataset.bookIndex = index;
+                displayController.cacheDom().containers.bookList.append(bookCard);
+                let coverArt = document.createElement("div");
+                coverArt.classList.add("cover-art");
+                let coverArtLetter = displayController.book.library[index].title.charAt(0);
+                let currentBookCard = document.querySelector(`.book-card[data-book-index = "${index}"] `);
+                coverArt.innerHTML = coverArtLetter;
+                currentBookCard.append(coverArt);
+                let title = document.createElement("div");
+                let author = document.createElement("div");
+                let pages = document.createElement("div");
+                let readStatus = document.createElement("div");
+                let toggleRead = document.createElement("button");
+                let removeBtn = document.createElement("button");
+                toggleRead.dataset.bookIndex = index;
+                removeBtn.dataset.bookIndex = index;
+                removeBtn.classList.add("remove-book");
+                title.innerHTML = `Title : ${value.title} `;
+                author.innerHTML = `Author : ${value.author} `;
+                pages.innerHTML = `Pages : ${value.pages} `;
+                readStatus.innerHTML = `Read Status : ${value.readStatus}`;
+                removeBtn.innerHTML = "REMOVE BOOK";
+                if(value.readStatus == "No"){
+                    toggleRead.classList.add("not-read-book");
+                    toggleRead.innerHTML = "NOT READ";
+                }
+                else if(value.readStatus == "Yes"){
+                    toggleRead.classList.add("read-book");
+                    toggleRead.innerHTML = "READ BOOK";
+
+                }
+                currentBookCard.append(title);
+                currentBookCard.append(author);
+                currentBookCard.append(pages);
+                currentBookCard.append(readStatus);
+                currentBookCard.append(toggleRead);
+                currentBookCard.append(removeBtn);
+                
+                 
+            }
+
+            )       
+    }
+
+
+
+    static removeExistingBookCard(){
+        displayController.cacheDom().containers.bookCards.forEach(bookCard=>{
+            displayController.cacheDom().containers.bookList.removeChild(bookCard)
+        })
+    }
     
 
+
+    static cacheDom (){
+        let containers ={
+            bookList : document.querySelector(".book-list"),
+            bookCards : document.querySelectorAll(".book-card")
+        }
+        let inputs = {
+            titleInput : document.querySelector("input#title").value,
+            authorInput : document.querySelector("input#author").value,
+            pagesInput : document.querySelector("input#pages").value,
+            readStatusInput : document.querySelector("#read-status").value,
+            allInputs : document.querySelectorAll("form > input")
+        }
+
+        let buttons = {
+            displaySideBar : document.querySelector("button.new-book"),
+            addBook : document.querySelector("button.add"),
+            removeBook : document.querySelectorAll(".remove-book")
+
+        };
+        return {inputs, buttons,containers}
+
+    
+    }
+
+
+    
+   bindEvents(){
+        displayController.cacheDom().buttons.addBook.addEventListener("click",this.readInputs);
+        displayController.cacheDom().buttons.addBook.addEventListener("click",displayController.generateBookCard);
+        document.addEventListener("click",this.removeBook);
+        document.addEventListener("click",this.toggleStatus);
+    }
+
+    toggleStatus(event){
+        let element = event.target;
+        if(element.className == "read-book" || element.className == "not-read-book"){
+            displayController.book.toggleReadStatus(element.dataset.bookIndex);
+            displayController.generateBookCard();
+        }
+    }
+
+    removeBook(event){
+        let element = event.target;
+        if(element.className == "remove-book"){
+            console.log(displayController.book.library);
+            console.log(element.dataset.bookIndex);
+
+            displayController.book.removeBookFromLibrary(element.dataset.bookIndex);
+            displayController.generateBookCard();
+        }
+    }
+    
+   readInputs(event){
+        event.preventDefault();
+        let title = displayController.cacheDom().inputs.titleInput;
+        let author =displayController.cacheDom().inputs.authorInput;
+        let pages = displayController.cacheDom().inputs.pagesInput;
+        let readStatus = displayController.cacheDom().inputs.readStatusInput;
+        displayController.book.addBooktoLibrary(title,author,pages,readStatus);
+        console.log(displayController.book.library)
+        displayController.clearInputs();
+        
+    }
+
+
+    
+    static clearInputs(){
+        displayController.cacheDom().inputs.allInputs.forEach(inputField => inputField.value = "");
+    }
+
+
 }
 
-function removeBook(indexNumber){
-    myLibrary.splice(indexNumber,1);
-
-}
+let app = new displayController();
